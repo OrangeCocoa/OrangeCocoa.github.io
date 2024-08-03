@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ぶろぐ</title><link>https://OrangeCocoa.github.io/</link><description>Recent content on ぶろぐ</description><generator>Hugo</generator><language>ja-jp</language><lastBuildDate>Fri, 02 Aug 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://OrangeCocoa.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Hugoでブログ作った</title><link>https://OrangeCocoa.github.io/%E6%8A%80%E8%A1%93%E7%B3%BB%E3%81%9D%E3%81%AE%E4%BB%96/hugo%E3%81%A7%E3%83%96%E3%83%AD%E3%82%B0%E4%BD%9C%E3%81%A3%E3%81%9F/</link><pubDate>Fri, 02 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/%E6%8A%80%E8%A1%93%E7%B3%BB%E3%81%9D%E3%81%AE%E4%BB%96/hugo%E3%81%A7%E3%83%96%E3%83%AD%E3%82%B0%E4%BD%9C%E3%81%A3%E3%81%9F/</guid><description>ホームページを公開する方法なんて何も知らないし、WordPressもまともに使えず挫折したことがあるけども、ふとHugoで作ってみようと思い至る。
 公開先をGitHub PagesにするかNetlifyにするかで迷いましたが、いろいろとめんどくさくないGitHubPagesに決定。
 登録するサービスが少なく済むしね。
+ちなみに二つとも費用はかかりません。（無料じゃなかったらやってない）
 注意点ですが、GitHub Pagesはアフィリエイトやエロサイトなどの運用は恐らく認められていないので、やらないように。
+GitHubでソースコード公開してるので、気になったら参考にどうぞ。
+https://github.com/OrangeCocoa/Hugo_OrangeCocoa.github.io
 目次
-Hugoのインストール Hugoのセットアップ GitHub リポジトリの作成と、GitHub Actionsへのフック デプロイエラー解決 コメント欄の追加 リンクを別タブで開く mermaid記法を使う Hugoのインストール ここ参考。
+Hugoのインストール Hugoのセットアップ GitHub リポジトリの作成と、GitHub Actionsへのフック デプロイエラー解決 コメント欄の追加 リンクを別タブで開く mermaid記法を使う Hugoのインストール ここからDL
 Windowsなので
 winget install Hugo.Hugo.Extended
 でインストール。
@@ -28,10 +31,7 @@ Hugoプロジェクトのローカルリポジトリタブを選択している�
 git remote add origin https://github.com/[アカウント名]/[リポジトリ名]
 それが済んだらデプロイアクセス用のSSH鍵を登録していく。
 コマンドで
-ssh-keygen -t ed25519 -f blog_ssh
-など実行して適当に公開鍵と秘密鍵を作る。
-次に公開鍵（.pubとついてる方）をHugoのデプロイ先リポジトリに登録。
-メモ帳などのテキストエディタで開いてコピペ。</description></item><item><title>ゼンレスゾーンゼロ トロコン</title><link>https://OrangeCocoa.github.io/%E3%83%88%E3%83%AD%E3%83%95%E3%82%A3%E3%83%BC/%E3%82%BC%E3%83%B3%E3%83%AC%E3%82%B9%E3%82%BE%E3%83%BC%E3%83%B3%E3%82%BC%E3%83%AD/</link><pubDate>Fri, 02 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/%E3%83%88%E3%83%AD%E3%83%95%E3%82%A3%E3%83%BC/%E3%82%BC%E3%83%B3%E3%83%AC%E3%82%B9%E3%82%BE%E3%83%BC%E3%83%B3%E3%82%BC%E3%83%AD/</guid><description>トロコンしました。
+ssh-keygen -t ed25519 -f blog_ssh</description></item><item><title>【トロコン】ゼンレスゾーンゼロ</title><link>https://OrangeCocoa.github.io/%E3%83%88%E3%83%AD%E3%83%95%E3%82%A3%E3%83%BC/%E3%82%BC%E3%83%B3%E3%83%AC%E3%82%B9%E3%82%BE%E3%83%BC%E3%83%B3%E3%82%BC%E3%83%AD/</link><pubDate>Wed, 31 Jul 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/%E3%83%88%E3%83%AD%E3%83%95%E3%82%A3%E3%83%BC/%E3%82%BC%E3%83%B3%E3%83%AC%E3%82%B9%E3%82%BE%E3%83%BC%E3%83%B3%E3%82%BC%E3%83%AD/</guid><description>トロコンしました。
 なんとかリリース月の7月中に間に合ってよかった。
 ちなみにPSNPでは46番目のプラチナ獲得でした。
 初日から全割りしとけばよかった。</description></item></channel></rss>
