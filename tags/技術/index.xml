@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>技術 on ぶろぐ</title><link>https://OrangeCocoa.github.io/tags/%E6%8A%80%E8%A1%93/</link><description>Recent content in 技術 on ぶろぐ</description><generator>Hugo</generator><language>ja-jp</language><lastBuildDate>Fri, 02 Aug 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://OrangeCocoa.github.io/tags/%E6%8A%80%E8%A1%93/index.xml" rel="self" type="application/rss+xml"/><item><title>Hugoでブログ作った</title><link>https://OrangeCocoa.github.io/%E6%8A%80%E8%A1%93%E7%B3%BB%E3%81%9D%E3%81%AE%E4%BB%96/hugo%E3%81%A7%E3%83%96%E3%83%AD%E3%82%B0%E4%BD%9C%E3%81%A3%E3%81%9F/</link><pubDate>Fri, 02 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/%E6%8A%80%E8%A1%93%E7%B3%BB%E3%81%9D%E3%81%AE%E4%BB%96/hugo%E3%81%A7%E3%83%96%E3%83%AD%E3%82%B0%E4%BD%9C%E3%81%A3%E3%81%9F/</guid><description>ホームページを公開する方法なんて何も知らないし、WordPressもまともに使えず挫折したことがあるけども、ふとHugoで作ってみようと思い至る。
+公開先をGitHub PagesにするかNetlifyにするかで迷いましたが、いろいろとめんどくさくないGitHubPagesに決定。
+登録するサービスが少なく済むしね。
+注意点ですが、GitHub Pagesはアフィリエイトやエロサイトなどの運用は恐らく認められていないので、やらないように。
+目次
+Hugoのインストール Hugoのセットアップ GitHub リポジトリの作成と、GitHub Actionsへのフック デプロイエラー解決 コメント欄の追加 リンクを別タブで開く mermaid記法を使う Hugoのインストール ここ参考。
+Windowsなので
+winget install Hugo.Hugo.Extended
+でインストール。
+環境変数に登録までされるので、これが一番楽。
+Hugoのセットアップ コマンドプロンプトを開き、
+hugo new site [Hugoプロジェクト名]
+を実行すると、Hugoのプロジェクトが新規作成される。
+いくつかフォルダが作られるが、よく使うのはcontent, layouts, staticの三つ。
+またhugo.tomlはプロジェクトの設定ファイルになるので、これもよく編集する。
+hugo
+コマンドを実行すると、publicフォルダにビルドされる。
+今回はGitHub Actionsにビルドを任せるので使わなくてもOK。
+GitHub リポジトリの作成と、GitHub Actionsへのフック GitHubにHugoのデプロイ先と、Hugoプロジェクトの二つのリポジトリを作る。
+このとき、Hugoのデプロイ先はどうもGitHubアカウント名と同じ名前を使わないといけないそう。（ほんとか？）
+アカ名はOrangeCocoaなので、ブランチ名はOrangeCocoa.github.io。
+WebページのURLはhttps://OrangeCocoa.github.ioになる想定。
+諸兄ならばリポジトリの作り方くらい知っていようが、一応手順を記載する。
+WebのGitHubで空のHugoデプロイ先と、Hugoプロジェクトのリモートリポジトリを作成。
+Forkを使ってる場合、File &amp;gt; Init New RepositoryでHugoプロジェクトのフォルダを選択してローカルリポジトリを作成。（Hugoデプロイ先はいらない）
+Hugoプロジェクトのローカルリポジトリタブを選択している状態で、右上にあるConsoleボタンを押してコマンドプロンプトを開き、下記コマンドを実行。
+その後プッシュすればリモートブランチ作成コミットとなる。
+git remote add origin https://github.com/[アカウント名]/[リポジトリ名]
+それが済んだらデプロイアクセス用のSSH鍵を登録していく。
+コマンドで
+ssh-keygen -t ed25519 -f blog_ssh
+など実行して適当に公開鍵と秘密鍵を作る。
+次に公開鍵（.pubとついてる方）をHugoのデプロイ先リポジトリに登録。
+メモ帳などのテキストエディタで開いてコピペ。</description></item></channel></rss>
