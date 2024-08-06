@@ -1,15 +1,16 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ぶろぐ（仮）</title><link>https://OrangeCocoa.github.io/</link><description>Recent content on ぶろぐ（仮）</description><generator>Hugo</generator><language>ja-jp</language><lastBuildDate>Fri, 02 Aug 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://OrangeCocoa.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Hugoでブログ作った</title><link>https://OrangeCocoa.github.io/%E6%8A%80%E8%A1%93%E7%B3%BB%E3%81%9D%E3%81%AE%E4%BB%96/hugo%E3%81%A7%E3%83%96%E3%83%AD%E3%82%B0%E4%BD%9C%E3%81%A3%E3%81%9F/</link><pubDate>Fri, 02 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/%E6%8A%80%E8%A1%93%E7%B3%BB%E3%81%9D%E3%81%AE%E4%BB%96/hugo%E3%81%A7%E3%83%96%E3%83%AD%E3%82%B0%E4%BD%9C%E3%81%A3%E3%81%9F/</guid><description>Webページを公開する方法なんて何も知らないし、WordPressもまともに使えず挫折したことがあるけども、ふとHugoで作ってみようと思い至る。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ぶろぐ（仮）</title><link>https://OrangeCocoa.github.io/</link><description>Recent content on ぶろぐ（仮）</description><generator>Hugo</generator><language>ja-jp</language><lastBuildDate>Fri, 02 Aug 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://OrangeCocoa.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Hugo＋GitHubPages＋GitHubActionsでWebサイトを公開しよう</title><link>https://OrangeCocoa.github.io/%E6%8A%80%E8%A1%93%E7%B3%BB%E3%81%9D%E3%81%AE%E4%BB%96/hugogithubpagesgithubactions%E3%81%A7web%E3%82%B5%E3%82%A4%E3%83%88%E3%82%92%E5%85%AC%E9%96%8B%E3%81%97%E3%82%88%E3%81%86/</link><pubDate>Fri, 02 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/%E6%8A%80%E8%A1%93%E7%B3%BB%E3%81%9D%E3%81%AE%E4%BB%96/hugogithubpagesgithubactions%E3%81%A7web%E3%82%B5%E3%82%A4%E3%83%88%E3%82%92%E5%85%AC%E9%96%8B%E3%81%97%E3%82%88%E3%81%86/</guid><description>Webページ作成はHTMLべた書きでめんどくさくて時間もかかるし大して面白くない、レンダリングエンジン作る方が面白そう、とそんなイメージを持っていましたが、
+HUGOとGitHubActionsを使って公開まで自動化ができるというのを見て興味が出る。
+この記事は実際にデプロイして公開までやってみた備忘録になります。
+現時点でWebの知識もお金も全くないです。
 公開先をGitHub PagesにするかNetlifyにするかで迷いましたが、いろいろとめんどくさくないGitHubPagesに決定。
-登録するサービス少なく済むしね。
-ちなみに二つとも費用はかかりません。（無料じゃなかったらやってない）
-注意点ですが、GitHub Pagesはアフィリエイトやエロサイトなどの運用は恐らく認められていないので、やらないように。
+注意点ですが、GitHub Pagesはアフィリエイトなどの運用は恐らく認められていません。
 GitHubでソースコード公開してるので、気になったら参考にどうぞ。
 https://github.com/OrangeCocoa/Hugo_OrangeCocoa.github.io
 クイックスタートガイドはここ
 HugoHTMLでよく使うGoテンプレートの基本構文はここ
-作ってるときは英語ドキュメント見ながらだったけど、調べたら日本語ドキュメントがあったのでリンク全部差し替えた。 （一部翻訳ページがないものもある）
+（リンクを英語ドキュメントから日本語ドキュメントに差し替えましたが、一部翻訳ページがないものもあります）
 目次
-Hugoのインストール Hugoのセットアップ 個別ページと一覧ページの作成 TOPページの作成 GitHub リポジトリの作成と、GitHub Actionsへのフック デプロイエラー解決 画像の挿入 コメント欄の追加 Markdownの変換挙動をカスタマイズする リンクを別タブで開く Markdown内でmermaid記法を使う Markdown内でCSS定義したスタイルを使う Markdown内でGoAT記法を使う Hugoのインストール ここからDL
+Hugoのインストール Hugoのセットアップ 個別ページと一覧ページの作成 TOPページの作成 GitHub リポジトリの作成と、GitHub Actionsへのフック デプロイエラー解決 画像の挿入 コメント欄の追加 Markdownの変換挙動をカスタマイズする リンクを別タブで開く Markdown内でmermaid記法を使う Markdown内でCSS定義したスタイルを使う Markdown内でGoAT記法を使う Google検索で表示させる Hugoのインストール ここからDL
 Windowsなので
 winget install Hugo.Hugo.Extended
 でインストール。
@@ -17,7 +18,7 @@ winget install Hugo.Hugo.Extended
 Hugoのセットアップ コマンドプロンプトを開き、
 # カレントディレクトリにHugoのプロジェクトが新規作成される hugo new site [Hugoプロジェクト名] cd [Hugoプロジェクト名] # HTMLのビルド hugo # ローカルサーバー起動 hugo server hugo new site でいくつかフォルダが作られるが、よく使うのはcontent, layouts, staticの三つ。
 またhugo.tomlはプロジェクトの設定ファイルになるので、これもよく編集する。
-フォルダ構成はこんな感じ
+フォルダ構成はこんな感じ。
 p r o j e c t a a c d l s t h r s o a a t h u c s n t y a e g h e t a o t m o e t e u i e .</description></item><item><title>【トロコン】ゼンレスゾーンゼロ</title><link>https://OrangeCocoa.github.io/%E3%83%88%E3%83%AD%E3%83%95%E3%82%A3%E3%83%BC/%E3%82%BC%E3%83%B3%E3%83%AC%E3%82%B9%E3%82%BE%E3%83%BC%E3%83%B3%E3%82%BC%E3%83%AD/</link><pubDate>Wed, 31 Jul 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/%E3%83%88%E3%83%AD%E3%83%95%E3%82%A3%E3%83%BC/%E3%82%BC%E3%83%B3%E3%83%AC%E3%82%B9%E3%82%BE%E3%83%BC%E3%83%B3%E3%82%BC%E3%83%AD/</guid><description>トロコンしました。
 なんとかリリース月の7月中に間に合ってよかった。
 ちなみにPSNPでは46番目のプラチナ獲得でした。
