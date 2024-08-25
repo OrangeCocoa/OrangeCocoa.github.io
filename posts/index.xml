@@ -6,7 +6,7 @@ LibSassは現在公式から非推奨となっていますが、対応した事�
 これはHugoの拡張バージョンを使用するように設定するものですが、LibSassトランスパイラは拡張版に含まれるものであるとドキュメントに明記しているため、
 初期値falseのままではLibSassを利用できません。
 config.yml
-name: github pages on: push: branches: - master # Set a branch name to trigger deployment jobs: deploy: runs-on: ubuntu-latest steps: - uses: actions/checkout@v2 with: submodules: true # Fetch Hugo themes (true OR recursive) fetch-depth: 0 # Fetch all history for .</description></item><item><title>【トロコン】パウ・パトロール：ザ・ムービー アドベンチャー・シティがよんでいる</title><link>https://OrangeCocoa.github.io/posts/2024/%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A6%E3%83%91%E3%83%88%E3%83%AD%E3%83%BC%E3%83%AB%E3%82%B6%E3%83%A0%E3%83%BC%E3%83%93%E3%83%BC-%E3%82%A2%E3%83%89%E3%83%99%E3%83%B3%E3%83%81%E3%83%A3%E3%83%BC%E3%82%B7%E3%83%86%E3%82%A3%E3%81%8C%E3%82%88%E3%82%93%E3%81%A7%E3%81%84%E3%82%8B/</link><pubDate>Sat, 17 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A6%E3%83%91%E3%83%88%E3%83%AD%E3%83%BC%E3%83%AB%E3%82%B6%E3%83%A0%E3%83%BC%E3%83%93%E3%83%BC-%E3%82%A2%E3%83%89%E3%83%99%E3%83%B3%E3%83%81%E3%83%A3%E3%83%BC%E3%82%B7%E3%83%86%E3%82%A3%E3%81%8C%E3%82%88%E3%82%93%E3%81%A7%E3%81%84%E3%82%8B/</guid><description>パウパトロールをトロコンしました。
+name: github pages on: push: branches: - master jobs: deploy: runs-on: ubuntu-latest steps: - uses: actions/checkout@v2 with: submodules: true fetch-depth: 0 - name: Setup Hugo uses: peaceiris/actions-hugo@v2 with: hugo-version: &amp;#39;latest&amp;#39; extended: true - name: Build run: hugo --minify - name: Deploy uses: peaceiris/actions-gh-pages@v3 with: deploy_key: ${{ secrets.</description></item><item><title>【トロコン】パウ・パトロール：ザ・ムービー アドベンチャー・シティがよんでいる</title><link>https://OrangeCocoa.github.io/posts/2024/%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A6%E3%83%91%E3%83%88%E3%83%AD%E3%83%BC%E3%83%AB%E3%82%B6%E3%83%A0%E3%83%BC%E3%83%93%E3%83%BC-%E3%82%A2%E3%83%89%E3%83%99%E3%83%B3%E3%83%81%E3%83%A3%E3%83%BC%E3%82%B7%E3%83%86%E3%82%A3%E3%81%8C%E3%82%88%E3%82%93%E3%81%A7%E3%81%84%E3%82%8B/</link><pubDate>Sat, 17 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A6%E3%83%91%E3%83%88%E3%83%AD%E3%83%BC%E3%83%AB%E3%82%B6%E3%83%A0%E3%83%BC%E3%83%93%E3%83%BC-%E3%82%A2%E3%83%89%E3%83%99%E3%83%B3%E3%83%81%E3%83%A3%E3%83%BC%E3%82%B7%E3%83%86%E3%82%A3%E3%81%8C%E3%82%88%E3%82%93%E3%81%A7%E3%81%84%E3%82%8B/</guid><description>パウパトロールをトロコンしました。
 アニメと比べるとセルフシャドウが強いので、ちょっとキモイかも&amp;hellip;。
 攻略に関しては収集物を確認するすべがないため、メモをとりながら進めていくことを推奨します。
 さらに、ミニゲームリザルトの演出で金バッジに到達する前に演出スキップしてしまうと、データに記録されない不具合があるそうなので、スキップしないよう注意しましょう。
@@ -26,7 +26,24 @@ name: github pages on: push: branches: - master # Set a branch name to trigger d
 再発動にクールタイムがあるみたいだが、何も表示されてないので不明。
 ワンワンブギー 簡単な音ゲーを2分間続けるミニゲームになっており、単調なだけに苦痛です。
 PS5版はボタンUIの色が白黒になるため、認識難になっていて ゲーム中は対戦ぽい見た目ですが、自キャラとNPCのスコアを足した数が総獲得スコアになるので別に対戦ではなさそう。
-スコアのカウントアップ演出が長いので、スキップしないよう注意してください。</description></item><item><title>【トロコン】ゼンレスゾーンゼロ</title><link>https://OrangeCocoa.github.io/posts/2024/%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3%E3%82%BC%E3%83%B3%E3%83%AC%E3%82%B9%E3%82%BE%E3%83%BC%E3%83%B3%E3%82%BC%E3%83%AD/</link><pubDate>Fri, 02 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3%E3%82%BC%E3%83%B3%E3%83%AC%E3%82%B9%E3%82%BE%E3%83%BC%E3%83%B3%E3%82%BC%E3%83%AD/</guid><description>トロコンしました。
+スコアのカウントアップ演出が長いので、スキップしないよう注意してください。</description></item><item><title>【トロコン】BLUE PROTOCOL</title><link>https://OrangeCocoa.github.io/posts/2024/%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3blue-protocol/</link><pubDate>Sun, 11 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3blue-protocol/</guid><description>トロコンしました。
+一周年で貰えたクラス虎の巻LV70を使って、キャラ作成-&amp;gt;レベル70-&amp;gt;キャラ削除-&amp;gt;キャラ作成-&amp;gt;レベル70の繰り返しで、レベル系トロフィーはすぐ終わりました。
+チュートリアルスキップもあるし、今後も配布される機会はあると思うので、とってない方は時配布されたタイミングでやってみてください。
+レベルを上げても結局そのレベル帯の適正武器がなく、その他のコンテンツクリア系のトロフィーが取れないので、一キャラはストーリーを終わらせておくことをおすすめします。
+以下、挑戦方法がわかりにくいコンテンツの解説
+レイド 特定の時間にフィールドで気流ができている場所にインタラクトすると、参加できるコンテンツです。
+（場所によって挑戦できるレイドが異なります）
+各レイドの必要バトルスコアまでバトルスコアを上げるとレイドに挑戦できるようになります。
+期間限定で開放しているものもあり、そちらに挑戦できる際は常設レイドは過疎になりやすいので、限定レイドの方に挑戦しましょう。
+アップデートのお知らせに限定レイドの詳細が記載されるので、公式サイトをチェック。
+タイムアタック 期間限定のコンテンツです。
+アップデートのお知らせでタイムアタック開催の概要が発表されるので、こちらもチェックしましょう。
+各TAによって挑戦可能条件が異なります。
+自分のときは「ラッシュバトル七段」クリアでした。
+（ソロ攻略がきつかったので、マッチング募集に張り付いてました）
+それなりの火力とギミック対応が求められるので、最高レベルの武器と耐性付与のイマジンを揃えておきましょう。
+スコアアタック 冒険者ランク8昇格後に解放されるコンテンツです。
+レイドやTAと違い条件は挑戦するだけなので、放置でいいです。</description></item><item><title>【トロコン】ゼンレスゾーンゼロ</title><link>https://OrangeCocoa.github.io/posts/2024/%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3%E3%82%BC%E3%83%B3%E3%83%AC%E3%82%B9%E3%82%BE%E3%83%BC%E3%83%B3%E3%82%BC%E3%83%AD/</link><pubDate>Fri, 02 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3%E3%82%BC%E3%83%B3%E3%83%AC%E3%82%B9%E3%82%BE%E3%83%BC%E3%83%B3%E3%82%BC%E3%83%AD/</guid><description>トロコンしました。
 なんとかリリース月の7月中に間に合ってよかった。
 ちなみにPSNPでは46番目のプラチナ獲得でした。
 初日から全割りしとけばよかった。
