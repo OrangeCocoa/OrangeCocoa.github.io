@@ -1,0 +1,45 @@
+<!doctype html><html lang=ja><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=google-site-verification content="h63xtNzB2lPdUWJQuarTUFRI-4cuaBkepZGUMW11GCw"><link rel=stylesheet type=text/css href=/css/bulma.css integrity crossorigin=anonymous><link rel=stylesheet type=text/css href=/css/style.min.css integrity crossorigin=anonymous><title>備忘録（仮）</title></head><body><section id=main><section class="hero is-dark"><div class=header-container><header><div class=header-title>備忘録（仮）</div></header></div></section><div id=global-navi-bg><ul id=global-navi><li><a id=navi-home href=https://OrangeCocoa.github.io/index.html>TOPページ</a></li></ul></div><section class=section><div class=container><div class=page-contents-date>2024.08.26</div><div class=page-contents-title>HUGO＋GitHubPagesデプロイ時にDartSassを使う</div><div><a href=https://OrangeCocoa.github.io//tags/hugo>#HUGO</a>
+<a href=https://OrangeCocoa.github.io//tags/githubactions>#GitHubActions</a></div><div class=page-contents-body><p>ワークフロー内チェックアウト前に以下の処理を記述することで、実行環境でDartSassのコンパイルが実行できるようになります。</p><pre tabindex=0><code>- name: Install Dart Sass
+  run: sudo snap install dart-sass
+</code></pre><br><p>最終的には以下のようになります。</p><br><p><strong>config.yml</strong></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-config.yml data-lang=config.yml><span class=line><span class=cl><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>github pages</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>on</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>push</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>branches</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>master</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Actionタブからこのワークフローを手動で実行できる</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>workflow_dispatch</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>jobs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>deploy</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>runs-on</span><span class=p>:</span><span class=w> </span><span class=l>ubuntu-latest</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>steps</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Install Dart Sass</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>run</span><span class=p>:</span><span class=w> </span><span class=l>sudo snap install dart-sass</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Checkout</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>uses</span><span class=p>:</span><span class=w> </span><span class=l>actions/checkout@v3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>with</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>submodules</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>fetch-depth</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Setup Hugo</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>uses</span><span class=p>:</span><span class=w> </span><span class=l>peaceiris/actions-hugo@v2</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>with</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>hugo-version</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;latest&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>extended</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>  </span><span class=c># 拡張機能にアクセスするか</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Build</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>run</span><span class=p>:</span><span class=w> </span><span class=l>hugo --minify</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Deploy</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>uses</span><span class=p>:</span><span class=w> </span><span class=l>peaceiris/actions-gh-pages@v3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>with</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>deploy_key</span><span class=p>:</span><span class=w> </span><span class=l>${{ secrets.DEPLOY_SECRET }}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>external_repository</span><span class=p>:</span><span class=w> </span><span class=l>OrangeCocoa/OrangeCocoa.github.io</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>publish_branch</span><span class=p>:</span><span class=w> </span><span class=l>master</span><span class=w>
+</span></span></span></code></pre></div><br><h4 id=ローカル環境へのscoopのインストールとdartsassのインストール class="title is-4">ローカル環境へのScoopのインストールとDartSassのインストール</h4><p>Macではhomebrewでインストールできますが、今回はWindowsでインストールします。</p><br><p>Windows PowerShellを開き、以下の2つのコマンドを実行します。<br><strong>Set-ExecutionPolicy</strong>では同意を求めらえれるのでYを入力。</p><pre tabindex=0><code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+</code></pre><br><p>続けて、PowerShellで以下のコマンドを実行します。<br>こっちはコマンドプロンプトでも実行できますが、実行後どっちにしろ環境変数の適用のために終了させないといけないのでそのまま実行。</p><pre tabindex=0><code>scoop install main/sass
+</code></pre><br><p>これで<code>hugo server</code>コマンド実行時、<strong>transpiler</strong>に<strong>dartsass</strong>を指定してToCSSを使っていた場合にDartSassによるコンパイルが走ります。</p></div><script src=https://giscus.app/client.js data-repo=OrangeCocoa/OrangeCocoa.github.io data-repo-id=R_kgDOMekbMw data-category=Announcements data-category-id=DIC_kwDOMekbM84ChcLc data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=top data-theme=preferred_color_scheme data-lang=ja data-loading=lazy crossorigin=anonymous async></script><noscript>Please enable JavaScript to view the comments powered by giscus.</noscript></div></section></section><footer class=footer><div class="content has-text-centered">© 2024 備忘録（仮） All rights reserved.</div></footer><script src=https://cdn.jsdelivr.net/npm/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js></script></body></html>
