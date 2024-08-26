@@ -18,7 +18,7 @@ https://github.com/OrangeCocoa/Hugo_OrangeCocoa.github.io
 HugoHTMLでよく使うGoテンプレートの基本構文はここ
 （リンクを英語ドキュメントから日本語ドキュメントに差し替えましたが、一部翻訳ページがないものもあります）
 目次
-Hugoのインストール Hugoのセットアップ シングルページとリストページの作成 TOPページの作成 GitHub リポジトリの作成と、GitHub Actionsへのフック デプロイエラー解決 画像の挿入 コメント欄の追加 Markdownの変換挙動をカスタマイズする リンクを別タブで開く Markdown内でmermaid記法を使う Markdown内でCSS定義したスタイルを使う Markdown内でGoAT記法を使う Google検索で表示させる Hugoのインストール ここからDL
+Hugoのインストール Hugoのセットアップ シングルページとリストページの作成 TOPページの作成 GitHub リポジトリの作成と、GitHub Actionsへのフック デプロイエラー解決 画像の挿入 コメント欄の追加 Markdownの変換挙動をカスタマイズする リンクを別タブで開く Markdown内でmermaid記法を使う Markdown内でCSS定義したスタイルを使う Markdown内でGoAT記法を使う Google検索結果に表示させる Hugoのインストール ここからDL
 Windowsなので
 winget install Hugo.Hugo.Extended
 でインストール。
