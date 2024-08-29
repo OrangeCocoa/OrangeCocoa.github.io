@@ -7,7 +7,7 @@
 layouts/_default/term.htmlテンプレートで /tags/[タグ名]/index.htmlを作成したときのテンプレートを作ることができる。
 これを作成していないと、list.htmlがテンプレートとして認識されてしまうため注意。
 サイト内検索導入 pagefindを使った。
-ビルドコンフィグのHUGOビルド後に下記処理を追加。
+ワークフローのHUGOビルド後に下記処理を追加。
 - name: Run pagefind working-directory: ./ run: &amp;#34;npx pagefind --site public&amp;#34; その後、検索窓を表示させたいページで適当にレイアウトを作成して、下記を記載する。
 {{- $page := .Site.GetPage &amp;#34;/&amp;#34; -}} &amp;lt;link href=&amp;#34;{{- $page.RelPermalink -}}pagefind/pagefind-ui.css&amp;#34; rel=&amp;#34;stylesheet&amp;#34;&amp;gt; &amp;lt;script src=&amp;#34;{{- $page.RelPermalink -}}pagefind/pagefind-ui.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt; &amp;lt;div id=&amp;#34;search&amp;#34;&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;script&amp;gt; window.addEventListener(&amp;#39;DOMContentLoaded&amp;#39;, (event) =&amp;gt; { new PagefindUI({ element: &amp;#34;#search&amp;#34;, showSubResults: true }); }); &amp;lt;/script&amp;gt;</description></item><item><title>HUGO＋GitHubPagesデプロイ時にDartSassを使う</title><link>https://OrangeCocoa.github.io/posts/2024/08_26_hugo_githubpages%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E6%99%82%E3%81%ABdartsass%E3%82%92%E4%BD%BF%E3%81%86/</link><pubDate>Mon, 26 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/08_26_hugo_githubpages%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E6%99%82%E3%81%ABdartsass%E3%82%92%E4%BD%BF%E3%81%86/</guid><description>ワークフロー内チェックアウト前に以下の処理を記述することで、実行環境でDartSassのコンパイルが実行できるようになります。
 - name: Install Dart Sass run: sudo snap install dart-sass 最終的には以下のようになります。
