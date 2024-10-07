@@ -1,96 +1,359 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>天上天下唯我独尊備忘録雑記メモ覚書</title><link>https://OrangeCocoa.github.io/</link><description>Recent content on 天上天下唯我独尊備忘録雑記メモ覚書</description><generator>Hugo</generator><language>ja-jp</language><lastBuildDate>Tue, 27 Aug 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://OrangeCocoa.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>HUGO備忘録</title><link>https://OrangeCocoa.github.io/posts/2024/08_27_hugo%E5%82%99%E5%BF%98%E9%8C%B2/</link><pubDate>Tue, 27 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/08_27_hugo%E5%82%99%E5%BF%98%E9%8C%B2/</guid><description>HUGOの備忘録
-躓きそうなことがあれば、ここに追記していき、都度個別記事化する。
-ファイル分割先でグローバル変数を使う ファイル分割した際、{{ partial &amp;quot;header.html&amp;quot; . }}のように呼び出すが、
-このとき . を書き忘れると、分割先のファイル内でグローバル変数が使えなくなる。
-引数渡しみたいなことをしてるっぽい。
-タクソノミー用のランディングページを作成する ここの layouts/_default/taxonomy.htmlテンプレートで /tags/index.htmlを作成したときのテンプレートを、
-layouts/_default/term.htmlテンプレートで /tags/[タグ名]/index.htmlを作成したときのテンプレートを作ることができる。
-これを作成していないと、list.htmlがテンプレートとして認識されてしまうため注意。
-サイト内検索導入 pagefindを使った。
-ワークフローのHUGOビルド後に下記処理を追加。
-- name: Run pagefind working-directory: ./ run: &amp;#34;npx pagefind --site public&amp;#34; その後、検索窓を表示させたいページで適当にレイアウトを作成して、下記を記載する。
-{{- $page := .Site.GetPage &amp;#34;/&amp;#34; -}} &amp;lt;link href=&amp;#34;{{- $page.RelPermalink -}}pagefind/pagefind-ui.css&amp;#34; rel=&amp;#34;stylesheet&amp;#34;&amp;gt; &amp;lt;script src=&amp;#34;{{- $page.RelPermalink -}}pagefind/pagefind-ui.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt; &amp;lt;div id=&amp;#34;search&amp;#34;&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;script&amp;gt; window.addEventListener(&amp;#39;DOMContentLoaded&amp;#39;, (event) =&amp;gt; { new PagefindUI({ element: &amp;#34;#search&amp;#34;, showSubResults: true }); }); &amp;lt;/script&amp;gt;</description></item><item><title>HUGO＋GitHubPagesデプロイ時にDartSassを使う</title><link>https://OrangeCocoa.github.io/posts/2024/08_26_hugo_githubpages%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E6%99%82%E3%81%ABdartsass%E3%82%92%E4%BD%BF%E3%81%86/</link><pubDate>Mon, 26 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/08_26_hugo_githubpages%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E6%99%82%E3%81%ABdartsass%E3%82%92%E4%BD%BF%E3%81%86/</guid><description>ワークフロー内チェックアウト前に以下の処理を記述することで、実行環境でDartSassのコンパイルが実行できるようになります。
-- name: Install Dart Sass run: sudo snap install dart-sass 最終的には以下のようになります。
-config.yml
-name: github pages on: push: branches: - master # Actionタブからこのワークフローを手動で実行できる workflow_dispatch: jobs: deploy: runs-on: ubuntu-latest steps: - name: Install Dart Sass run: sudo snap install dart-sass - name: Checkout uses: actions/checkout@v3 with: submodules: true fetch-depth: 0 - name: Setup Hugo uses: peaceiris/actions-hugo@v2 with: hugo-version: &amp;#39;latest&amp;#39; extended: true # 拡張機能にアクセスするか - name: Build run: hugo --minify - name: Deploy uses: peaceiris/actions-gh-pages@v3 with: deploy_key: ${{ secrets.</description></item><item><title>HUGO＋GitHubPagesデプロイ時にLibSassを使う</title><link>https://OrangeCocoa.github.io/posts/2024/08_25_hugo_githubpages%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E6%99%82%E3%81%ABlibsass%E3%82%92%E4%BD%BF%E3%81%86/</link><pubDate>Sun, 25 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/08_25_hugo_githubpages%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E6%99%82%E3%81%ABlibsass%E3%82%92%E4%BD%BF%E3%81%86/</guid><description>GitHubPages構築にGitHubActionsを使ってデプロイしていますが、scssを使って記述したcssをGitHub上でコンパイルするため行なった対応です。
-LibSassは現在公式から非推奨となっていますが、対応した事例が英語のディスカッションでしかなかったため、DartSassに移行する前にひとまず対応してみました。
-てきとうに作ったscssファイルを resources.ToCSSで変換する処理を普通に書きます。
-&amp;lt;head&amp;gt;タグ内
-{{ $options := (dict &amp;#34;transpiler&amp;#34; &amp;#34;libsass&amp;#34; &amp;#34;targetPath&amp;#34; &amp;#34;css/style.css&amp;#34;) }} {{ with resources.Get &amp;#34;css/tekitou.scss&amp;#34; | toCSS $options | minify }} &amp;lt;link rel=&amp;#34;stylesheet&amp;#34; type=&amp;#34;text/css&amp;#34; href=&amp;#34;{{ .RelPermalink }}&amp;#34; integrity=&amp;#34;{{ .Data.Integrity }}&amp;#34; crossorigin=&amp;#34;anonymous&amp;#34;&amp;gt; ワークフロー内でHUGOをセットアップする処理の中にextended: trueの記述を追加します。
-これはHUGOの拡張バージョンを使用するように設定するものですが、LibSassトランスパイラは拡張版に含まれるものであるとドキュメントに明記しているため、
-初期値falseのままではLibSassを利用できません。
-config.yml
-name: github pages on: push: branches: - master # Actionタブからこのワークフローを手動で実行できる workflow_dispatch: jobs: deploy: runs-on: ubuntu-latest steps: - name: Checkout uses: actions/checkout@v3 with: submodules: true fetch-depth: 0 - name: Setup Hugo uses: peaceiris/actions-hugo@v2 with: hugo-version: &amp;#39;latest&amp;#39; extended: true # 拡張機能にアクセスするか - name: Build run: hugo --minify - name: Deploy uses: peaceiris/actions-gh-pages@v3 with: deploy_key: ${{ secrets.</description></item><item><title>【トロコン】パウ・パトロール：ザ・ムービー アドベンチャー・シティがよんでいる</title><link>https://OrangeCocoa.github.io/posts/2024/08_17_%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3_%E3%83%91%E3%82%A6%E3%83%91%E3%83%88%E3%83%AD%E3%83%BC%E3%83%AB%E3%82%B6%E3%83%A0%E3%83%BC%E3%83%93%E3%83%BC-%E3%82%A2%E3%83%89%E3%83%99%E3%83%B3%E3%83%81%E3%83%A3%E3%83%BC%E3%82%B7%E3%83%86%E3%82%A3%E3%81%8C%E3%82%88%E3%82%93%E3%81%A7%E3%81%84%E3%82%8B/</link><pubDate>Sat, 17 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/08_17_%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3_%E3%83%91%E3%82%A6%E3%83%91%E3%83%88%E3%83%AD%E3%83%BC%E3%83%AB%E3%82%B6%E3%83%A0%E3%83%BC%E3%83%93%E3%83%BC-%E3%82%A2%E3%83%89%E3%83%99%E3%83%B3%E3%83%81%E3%83%A3%E3%83%BC%E3%82%B7%E3%83%86%E3%82%A3%E3%81%8C%E3%82%88%E3%82%93%E3%81%A7%E3%81%84%E3%82%8B/</guid><description>パウパトロールをトロコンしました。
-アニメと比べるとセルフシャドウが強いので、ちょっとキモイかも&amp;hellip;。
-攻略に関しては収集物を確認するすべがないため、メモをとりながら進めていくことを推奨します。
-さらに、ミニゲームリザルトの演出で金バッジに到達する前に演出スキップしてしまうと、データに記録されない不具合があるそうなので、スキップしないよう注意しましょう。
-（リザルト遷移時にオートセーブが走っていますが、内部処理がどうなってるか不明&amp;hellip;）
-あと、何が重いのかわかりませんが、ロードが絶望的に遅いです。
-ストーリー インタラクトするミニゲーム前に一度見たチュートリアルも毎回表示されたりなど、とにかくテンポが悪いのでやり直しするとめんどくさいです。
-難しいことは全くないので、特に詰まることはないかなと思います。
-ミニゲーム ミニゲームは各ステージのレベルすべてクリアする必要があります。
-内容のほとんどがストーリーと同じくクッキーを集めるだけなので、注意点があるもののみポイントを記載します。
-タイムトライアル・ビークル タイムトライアルと言いながら、カウントダウン式の時間制限があるものはスカイのみ、カウントアップがチェイスとリバティ、それ以外は時間制限がありません。
-スカイはクセもあり時間もけっこう厳しめなので、ミニゲームの中では体感的に一番難しいと感じた。
-チェイスは加速状態が他より速く、クッキー獲得のための車線変更がシビアになってしまいやすいので、加速パネルを踏まない工夫がいるかも。
-難易度の違いは必要クッキー数（ロッキーはゴミ回収）のみであり、コース配置も自動生成なのできついパターンに出会ったらやり直すのも手です。
-（自分もこれ取るのは無理だろって配置が何回かありました）
-スクーターのリバティとそれ以外とで、車線切り替え操作のレスポンスに明らかな違いがあるのが解せなかった&amp;hellip;。
-あと、チェイスのみかもしれませんが何もないところでも〇ボタンを押すと加速できるみたいです。
-再発動にクールタイムがあるみたいだが、何も表示されてないので不明。
-ワンワンブギー 簡単な音ゲーを2分間続けるミニゲームになっており、単調なだけに苦痛です。
-PS5版はボタンUIの色が白黒になるため、認識難になっていて ゲーム中は対戦ぽい見た目ですが、自キャラとNPCのスコアを足した数が総獲得スコアになるので別に対戦ではなさそう。
-スコアのカウントアップ演出が長いので、スキップしないよう注意してください。</description></item><item><title>【トロコン】BLUE PROTOCOL</title><link>https://OrangeCocoa.github.io/posts/2024/08_11_%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3_blue-protocol/</link><pubDate>Sun, 11 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/08_11_%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3_blue-protocol/</guid><description>トロコンしました。
-一周年で貰えたクラス虎の巻LV70を使って、キャラ作成-&amp;gt;レベル70-&amp;gt;キャラ削除-&amp;gt;キャラ作成-&amp;gt;レベル70の繰り返しで、レベル系トロフィーはすぐ終わりました。
-チュートリアルスキップもあるし、今後も配布される機会はあると思うので、とってない方は時配布されたタイミングでやってみてください。
-レベルを上げても結局そのレベル帯の適正武器がなく、その他のコンテンツクリア系のトロフィーが取れないので、一キャラはストーリーを終わらせておくことをおすすめします。
-以下、挑戦方法がわかりにくいコンテンツの解説
-レイド 特定の時間にフィールドで気流ができている場所にインタラクトすると、参加できるコンテンツです。
-（場所によって挑戦できるレイドが異なります）
-各レイドの必要バトルスコアまでバトルスコアを上げるとレイドに挑戦できるようになります。
-期間限定で開放しているものもあり、そちらに挑戦できる際は常設レイドは過疎になりやすいので、限定レイドの方に挑戦しましょう。
-アップデートのお知らせに限定レイドの詳細が記載されるので、公式サイトをチェック。
-タイムアタック 期間限定のコンテンツです。
-アップデートのお知らせでタイムアタック開催の概要が発表されるので、こちらもチェックしましょう。
-各TAによって挑戦可能条件が異なります。
-自分のときは「ラッシュバトル七段」クリアでした。
-（ソロ攻略がきつかったので、マッチング募集に張り付いてました）
-それなりの火力とギミック対応が求められるので、最高レベルの武器と耐性付与のイマジンを揃えておきましょう。
-スコアアタック 冒険者ランク8昇格後に解放されるコンテンツです。
-レイドやTAと違い条件は挑戦するだけなので、放置でいいです。</description></item><item><title>【トロコン】ゼンレスゾーンゼロ</title><link>https://OrangeCocoa.github.io/posts/2024/08_02_%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3_%E3%82%BC%E3%83%B3%E3%83%AC%E3%82%B9%E3%82%BE%E3%83%BC%E3%83%B3%E3%82%BC%E3%83%AD/</link><pubDate>Fri, 02 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/08_02_%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3_%E3%82%BC%E3%83%B3%E3%83%AC%E3%82%B9%E3%82%BE%E3%83%BC%E3%83%B3%E3%82%BC%E3%83%AD/</guid><description>トロコンしました。
-なんとかリリース月の7月中に間に合ってよかった。
-ちなみにPSNPでは46番目のプラチナ獲得でした。
-初日から全割りしとけばよかった。
-激変はこんな感じ。 片面育成足りてないので、火力的に全Sは厳しかった。
-2回目の激変は全Sがとれました。</description></item><item><title>HUGO＋GitHubPages＋GitHubActionsでWebサイトを公開しよう</title><link>https://OrangeCocoa.github.io/posts/2024/08_02_hugo_githubpages_githubactions%E3%81%A7web%E3%82%B5%E3%82%A4%E3%83%88%E3%82%92%E5%85%AC%E9%96%8B%E3%81%97%E3%82%88%E3%81%86/</link><pubDate>Fri, 02 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/08_02_hugo_githubpages_githubactions%E3%81%A7web%E3%82%B5%E3%82%A4%E3%83%88%E3%82%92%E5%85%AC%E9%96%8B%E3%81%97%E3%82%88%E3%81%86/</guid><description>Webページ作成はHTMLべた書きでめんどくさくて時間もかかるし大して面白くない、レンダリングエンジン作る方が面白そう、とそんなイメージを持っていましたが、
-HUGOとGitHubActionsを使って公開まで自動化ができるというのを見て興味が出る。
-この記事は実際にデプロイして公開までやってみた備忘録になります。
-現時点でWebの知識もお金も全くないです。
-公開先をGitHub PagesにするかNetlifyにするかで迷いましたが、いろいろとめんどくさくないGitHubPagesに決定。
-ブログっぽいものとして最低限必要な要素を解説していきます。
-注意点ですが、GitHub Pagesはアフィリエイトなどの運用は恐らく認められていません。
-GitHubでソースコード公開してるので、気になったら参考にどうぞ。
-https://github.com/OrangeCocoa/Hugo_OrangeCocoa.github.io
-クイックスタートガイドはここ
-HUGOでよく使うGoテンプレートの基本構文はここ
-（リンクを英語ドキュメントから日本語ドキュメントに差し替えましたが、一部翻訳ページがないものもあります）
-目次
-HUGOのインストール HUGOのセットアップ シングルページとリストページの作成 TOPページの作成 GitHub リポジトリの作成と、GitHub Actionsへのフック デプロイエラー解決 画像の挿入 コメント欄の追加 Markdownの変換挙動をカスタマイズする リンクを別タブで開く Markdown内でmermaid記法を使う Markdown内でCSS定義したスタイルを使う Markdown内でGoAT記法を使う Google検索結果に表示させる HUGOのインストール ここからDL
-Windowsなので
-winget install Hugo.Hugo.Extended
-でインストール。
-環境変数に登録までされるので、これが一番楽。
-HUGOのセットアップ コマンドプロンプトを開き、
-# カレントディレクトリにHugoのプロジェクトが新規作成される hugo new site [Hugoプロジェクト名] cd [Hugoプロジェクト名] # HTMLのビルド hugo # ローカルサーバー起動 hugo server hugo new site でいくつかフォルダが作られるが、よく使うのはcontent, layouts, staticの三つ。
-またhugo.tomlはプロジェクトの設定ファイルになるので、これもよく編集します。
-フォルダ構成はこんな感じ。
-p r o j e c t a a c d l s t h r s o a a t h u c s n t y a e g h e t a o t m o e t e u i e .</description></item><item><title>About</title><link>https://OrangeCocoa.github.io/nav/about/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/nav/about/</guid><description>ゲームプログラマーです。
-ゲーム以外にもいろいろやってますが、メインはゲームです。
-主な生息地はC/C++, C#, Unity。低レベルグラフィックスAPIも少々。
-他に使えるのはObjective-C, Go, GAS, UnrealEngine 4など。
-なんでもデータベース化するのが好き。
-趣味はトロフィー集め。
-最近Xbox Series Xも買いました。
-トロフィーカード
-X
-Follow @ruin0908</description></item><item><title>Archives</title><link>https://OrangeCocoa.github.io/nav/archives/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/nav/archives/</guid><description/></item><item><title>Search</title><link>https://OrangeCocoa.github.io/nav/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/nav/search/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>天上天下唯我独尊備忘録雑記メモ覚書</title><link>https://OrangeCocoa.github.io/</link><description>Recent content on 天上天下唯我独尊備忘録雑記メモ覚書</description><generator>Hugo</generator><language>ja-jp</language><lastBuildDate>Sun, 06 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://OrangeCocoa.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>トロコン_ダンまち バトルクロニクル</title><link>https://OrangeCocoa.github.io/posts/2024/10_06_%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3_%E3%83%80%E3%83%B3%E3%81%BE%E3%81%A1%E3%83%90%E3%83%88%E3%82%AF%E3%83%AD/</link><pubDate>Sun, 06 Oct 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/10_06_%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3_%E3%83%80%E3%83%B3%E3%81%BE%E3%81%A1%E3%83%90%E3%83%88%E3%82%AF%E3%83%AD/</guid><description>&lt;p>&lt;img src="https://OrangeCocoa.github.io/images/games/dancro/trocon.jpg" alt="dancro">&lt;/p>
+&lt;br>
+&lt;p>やっっっっとヴァリス2億の消費が終わった。&lt;/p>
+&lt;br>
+&lt;p>今年の3/5に始めたので、ちょうど7か月ほどかかりました。&lt;/p>
+&lt;br>
+&lt;p>無課金だとめちゃめちゃしんどいので、トロフィーのためだけにこのゲームをやるのはおすすめしません。&lt;br>
+が、すでに何個か獲得してしまった人へTIPSを残しておきます。&lt;/p>
+&lt;br>
+&lt;p>まずPS5,PS4ともに、&lt;strong>片方で獲得済みのトロフィーがある場合、関連する行動を一回行う&lt;/strong>ことで獲得できます。&lt;/p>
+&lt;br>
+&lt;h4 id="虎視眈々---魔石争奪戦で100回1位になる" class="title is-4">
+ &lt;strong>・虎視眈々 - 魔石争奪戦で100回1位になる&lt;/strong>
+&lt;/h4>&lt;p>前提として、このゲームは&lt;strong>PS版とそれ以外の機種で別々のサーバーが設けられています&lt;/strong>。&lt;/p>
+&lt;br>
+&lt;p>オンで一位を100回も取らなくてはいけないので一見難しそうに見えますが、&lt;br>
+一番下のランク帯の新米Ⅲでは、だいたいマッチング開始から40秒ほどで人が揃わなければNPCのみで魔石争奪戦を開始することができます。&lt;br>
+さらにPSサーバーではポイントを獲得することができずランクが上がることはないうえ、基本的に過疎なので、それなりに育てたキャラを編成し&lt;strong>オート放置することで簡単に達成可能&lt;/strong>です。&lt;/p>
+&lt;br>
+&lt;p>既にランクを上げてしまった方は、月に一回ランクリセットがあるので、月初まで待ちましょう。&lt;/p>
+&lt;br>
+&lt;p>また、アプリ版から引き継ぎでPS版を始めると、接続サーバーがアプリ側になっているので、クロスプレイを切る必要があります。&lt;br>
+（PS版から始めた場合はPSサーバー接続になっているはず）&lt;br>
+ホーム画面から設定を開き、環境-&amp;gt;下にスクロールして&lt;strong>クロスプレイ制限をON&lt;/strong>にすると、&lt;strong>PSサーバーでの接続に切り替わります&lt;/strong>。&lt;br>
+この設定はPS側でしか行えません。&lt;/p>
+&lt;br>
+&lt;p>&lt;img src="https://OrangeCocoa.github.io/images/games/dancro/cross_play.jpg" alt="dancro">&lt;/p>
+&lt;br>
+&lt;p>このクロスプレイ制限設定は&lt;strong>ファミリアに入っている状態だと実行できない&lt;/strong>ため（ファミリアはそれぞれのサーバーに存在するため）、&lt;br>
+ファミリアに所属している場合は一度離脱しましょう。&lt;br>
+ホーム下のファミリアボタン-&amp;gt;管理-&amp;gt;ファミリア詳細-&amp;gt;メンバー一覧から脱退を行えます。&lt;br>
+（まじでわかりづらい）&lt;/p>
+&lt;br>
+&lt;p>&lt;img src="https://OrangeCocoa.github.io/images/games/dancro/familiar.png" alt="dancro">&lt;/p>
+&lt;br>
+&lt;h4 id="勇猛果敢---闘技大会で100回勝利する" class="title is-4">
+ &lt;strong>・勇猛果敢 - 闘技大会で100回勝利する&lt;/strong>
+&lt;/h4>&lt;p>これもPSサーバーに接続することで簡単に取得できます。&lt;br>
+が、別にアプリ版サーバーでもわりと簡単だったので、こっちはヴァリス2億消費を目指しつつ任務や交換所のためにちまちまやっていってもいい感じでした。&lt;/p>
+&lt;br>
+&lt;p>また、基本的に半月に一回ランクリセットがあります。&lt;/p>
+&lt;br>
+&lt;h4 id="オラリオの大富豪---ヴァリスを2億消費する" class="title is-4">
+ &lt;strong>・オラリオの大富豪 - ヴァリスを2億消費する&lt;/strong>
+&lt;/h4>&lt;p>このトロフィーを取得する過程でほとんどのトロフィーが取得で来ていると思います。&lt;/p>
+&lt;br>
+&lt;p>まずヴァリスを使う先が圧倒的にないので、無課金の場合は未獲得のキャラがいるガチャをできるだけ狙って石を貯めてください。&lt;br>
+このゲームはキャラ強化、特に&lt;strong>練度（スキル）強化&lt;/strong>による消費量がすさまじいので、それが主な消費先になっていきます。&lt;/p>
+&lt;br>
+&lt;p>一応オプション-&amp;gt;アイテム一覧-&amp;gt;アイテム詳細からの素材合成で無限にヴァリスが消費できますが、現実的ではないです。
+（上限突破石と本のみ）&lt;/p>
+&lt;br>
+&lt;p>ヴァリスの獲得先は基本的に&lt;strong>イベント報酬&lt;/strong>か、&lt;strong>デイリー強化クエストに金土日でくるヴァリスクエスト&lt;/strong>になるかと思います。&lt;br>
+（以前はバトルアイテム売却で稼げたが、アップデートにより売却価格が大幅に下げられました）&lt;/p>
+&lt;br>
+&lt;p>最終的に筆者の手持ちは以下のような感じになりました。&lt;br>
+だいたいスキル強化終わってます。&lt;/p>
+&lt;br>
+&lt;p>&lt;img src="https://OrangeCocoa.github.io/images/games/dancro/chara01.png" alt="dancro">&lt;/p>
+&lt;p>&lt;img src="https://OrangeCocoa.github.io/images/games/dancro/chara02.png" alt="dancro">&lt;/p>
+&lt;p>&lt;img src="https://OrangeCocoa.github.io/images/games/dancro/chara03.png" alt="dancro">&lt;/p>
+&lt;p>&lt;img src="https://OrangeCocoa.github.io/images/games/dancro/chara04.png" alt="dancro">&lt;/p></description></item><item><title>HUGO備忘録</title><link>https://OrangeCocoa.github.io/posts/2024/08_27_hugo%E5%82%99%E5%BF%98%E9%8C%B2/</link><pubDate>Tue, 27 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/08_27_hugo%E5%82%99%E5%BF%98%E9%8C%B2/</guid><description>&lt;p>HUGOの備忘録&lt;br>
+躓きそうなことがあれば、ここに追記していき、都度個別記事化する。&lt;/p>
+&lt;hr>
+&lt;h3 id="ファイル分割先でグローバル変数を使う" class="title is-3">
+ ファイル分割先でグローバル変数を使う
+&lt;/h3>&lt;p>ファイル分割した際、&lt;code>{{ partial &amp;quot;header.html&amp;quot; . }}&lt;/code>のように呼び出すが、&lt;br>
+このとき &lt;code>.&lt;/code> を書き忘れると、分割先のファイル内でグローバル変数が使えなくなる。&lt;br>
+引数渡しみたいなことをしてるっぽい。&lt;/p>
+&lt;hr>
+&lt;h3 id="タクソノミー用のランディングページを作成する" class="title is-3">
+ タクソノミー用のランディングページを作成する
+&lt;/h3>&lt;p>&lt;a href="https://juggernautjp.info/content-management/taxonomies/#default-taxonomies" target="_blank" rel="noopener">ここ&lt;/a>の
+&lt;strong>layouts/_default/taxonomy.html&lt;/strong>テンプレートで &lt;strong>/tags/index.html&lt;/strong>を作成したときのテンプレートを、&lt;br>
+&lt;strong>layouts/_default/term.html&lt;/strong>テンプレートで &lt;strong>/tags/[タグ名]/index.html&lt;/strong>を作成したときのテンプレートを作ることができる。&lt;/p>
+&lt;br>
+&lt;p>これを作成していないと、list.htmlがテンプレートとして認識されてしまうため注意。&lt;/p>
+&lt;hr>
+&lt;h3 id="サイト内検索導入" class="title is-3">
+ サイト内検索導入
+&lt;/h3>&lt;p>&lt;a href="https://pagefind.app/" target="_blank" rel="noopener">pagefind&lt;/a>を使った。&lt;br>
+ワークフローのHUGOビルド後に下記処理を追加。&lt;/p>
+&lt;br>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-config.yml" data-lang="config.yml">&lt;span style="display:flex;">&lt;span>- &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Run pagefind&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">working-directory&lt;/span>: &lt;span style="color:#ae81ff">./&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">run&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;npx pagefind --site public&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;br>
+&lt;p>その後、検索窓を表示させたいページで適当にレイアウトを作成して、下記を記載する。&lt;/p>
+&lt;br>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-single.html" data-lang="single.html">&lt;span style="display:flex;">&lt;span>{{- $page := .Site.GetPage &amp;#34;/&amp;#34; -}}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;&lt;span style="color:#f92672">link&lt;/span> &lt;span style="color:#a6e22e">href&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;{{- $page.RelPermalink -}}pagefind/pagefind-ui.css&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">rel&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;stylesheet&amp;#34;&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;&lt;span style="color:#f92672">script&lt;/span> &lt;span style="color:#a6e22e">src&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;{{- $page.RelPermalink -}}pagefind/pagefind-ui.js&amp;#34;&lt;/span>&amp;gt;&amp;lt;/&lt;span style="color:#f92672">script&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;&lt;span style="color:#f92672">div&lt;/span> &lt;span style="color:#a6e22e">id&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;search&amp;#34;&lt;/span>&amp;gt;&amp;lt;/&lt;span style="color:#f92672">div&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;&lt;span style="color:#f92672">script&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> window.&lt;span style="color:#a6e22e">addEventListener&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;DOMContentLoaded&amp;#39;&lt;/span>, (&lt;span style="color:#a6e22e">event&lt;/span>) =&amp;gt; {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#a6e22e">PagefindUI&lt;/span>({ &lt;span style="color:#a6e22e">element&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#e6db74">&amp;#34;#search&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">showSubResults&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span> });
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> });
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;/&lt;span style="color:#f92672">script&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>HUGO＋GitHubPagesデプロイ時にDartSassを使う</title><link>https://OrangeCocoa.github.io/posts/2024/08_26_hugo_githubpages%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E6%99%82%E3%81%ABdartsass%E3%82%92%E4%BD%BF%E3%81%86/</link><pubDate>Mon, 26 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/08_26_hugo_githubpages%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E6%99%82%E3%81%ABdartsass%E3%82%92%E4%BD%BF%E3%81%86/</guid><description>&lt;p>ワークフロー内チェックアウト前に以下の処理を記述することで、実行環境でDartSassのコンパイルが実行できるようになります。&lt;/p>
+&lt;pre tabindex="0">&lt;code>- name: Install Dart Sass
+ run: sudo snap install dart-sass
+&lt;/code>&lt;/pre>&lt;br>
+&lt;p>最終的には以下のようになります。&lt;/p>
+&lt;br>
+&lt;p>&lt;strong>config.yml&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-config.yml" data-lang="config.yml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">github pages&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">on&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">push&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">branches&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">master&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># Actionタブからこのワークフローを手動で実行できる&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">workflow_dispatch&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">jobs&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">deploy&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">runs-on&lt;/span>: &lt;span style="color:#ae81ff">ubuntu-latest&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">steps&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Install Dart Sass&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">run&lt;/span>: &lt;span style="color:#ae81ff">sudo snap install dart-sass&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Checkout&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">uses&lt;/span>: &lt;span style="color:#ae81ff">actions/checkout@v3&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">with&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">submodules&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">fetch-depth&lt;/span>: &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Setup Hugo&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">uses&lt;/span>: &lt;span style="color:#ae81ff">peaceiris/actions-hugo@v2&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">with&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">hugo-version&lt;/span>: &lt;span style="color:#e6db74">&amp;#39;latest&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">extended&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span> &lt;span style="color:#75715e"># 拡張機能にアクセスするか&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Build&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">run&lt;/span>: &lt;span style="color:#ae81ff">hugo --minify&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Deploy&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">uses&lt;/span>: &lt;span style="color:#ae81ff">peaceiris/actions-gh-pages@v3&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">with&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">deploy_key&lt;/span>: &lt;span style="color:#ae81ff">${{ secrets.DEPLOY_SECRET }}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">external_repository&lt;/span>: &lt;span style="color:#ae81ff">OrangeCocoa/OrangeCocoa.github.io&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">publish_branch&lt;/span>: &lt;span style="color:#ae81ff">master&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;br>
+&lt;h4 id="ローカル環境へのscoopのインストールとdartsassのインストール" class="title is-4">
+ ローカル環境へのScoopのインストールとDartSassのインストール
+&lt;/h4>&lt;p>Macではhomebrewでインストールできますが、今回はWindowsでインストールします。&lt;/p></description></item><item><title>HUGO＋GitHubPagesデプロイ時にLibSassを使う</title><link>https://OrangeCocoa.github.io/posts/2024/08_25_hugo_githubpages%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E6%99%82%E3%81%ABlibsass%E3%82%92%E4%BD%BF%E3%81%86/</link><pubDate>Sun, 25 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/08_25_hugo_githubpages%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E6%99%82%E3%81%ABlibsass%E3%82%92%E4%BD%BF%E3%81%86/</guid><description>&lt;p>GitHubPages構築にGitHubActionsを使ってデプロイしていますが、scssを使って記述したcssをGitHub上でコンパイルするため行なった対応です。&lt;br>
+LibSassは現在公式から非推奨となっていますが、対応した事例が英語のディスカッションでしかなかったため、DartSassに移行する前にひとまず対応してみました。&lt;/p>
+&lt;hr>
+&lt;p>てきとうに作ったscssファイルを &lt;strong>resources.ToCSS&lt;/strong>で変換する処理を普通に書きます。&lt;/p>
+&lt;br>
+&lt;p>&lt;strong>&amp;lt;head&amp;gt;タグ内&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-header.html" data-lang="header.html">&lt;span style="display:flex;">&lt;span>{{ $options := (dict &amp;#34;transpiler&amp;#34; &amp;#34;libsass&amp;#34; &amp;#34;targetPath&amp;#34; &amp;#34;css/style.css&amp;#34;) }}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{{ with resources.Get &amp;#34;css/tekitou.scss&amp;#34; | toCSS $options | minify }}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;&lt;span style="color:#f92672">link&lt;/span> &lt;span style="color:#a6e22e">rel&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;stylesheet&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">type&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;text/css&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">href&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;{{ .RelPermalink }}&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">integrity&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;{{ .Data.Integrity }}&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">crossorigin&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;anonymous&amp;#34;&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;br>
+&lt;p>ワークフロー内でHUGOをセットアップする処理の中に&lt;code>extended: true&lt;/code>の記述を追加します。&lt;br>
+これはHUGOの拡張バージョンを使用するように設定するものですが、LibSassトランスパイラは拡張版に含まれるものであると&lt;a href="https://gohugo.io/functions/resources/tocss/" target="_blank" rel="noopener">ドキュメント&lt;/a>に明記しているため、&lt;br>
+初期値falseのままではLibSassを利用できません。&lt;/p>
+&lt;br>
+&lt;p>&lt;strong>config.yml&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-config.yml" data-lang="config.yml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">github pages&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">on&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">push&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">branches&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">master&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># Actionタブからこのワークフローを手動で実行できる&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">workflow_dispatch&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">jobs&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">deploy&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">runs-on&lt;/span>: &lt;span style="color:#ae81ff">ubuntu-latest&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">steps&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Checkout&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">uses&lt;/span>: &lt;span style="color:#ae81ff">actions/checkout@v3&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">with&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">submodules&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">fetch-depth&lt;/span>: &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Setup Hugo&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">uses&lt;/span>: &lt;span style="color:#ae81ff">peaceiris/actions-hugo@v2&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">with&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">hugo-version&lt;/span>: &lt;span style="color:#e6db74">&amp;#39;latest&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">extended&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span> &lt;span style="color:#75715e"># 拡張機能にアクセスするか&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Build&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">run&lt;/span>: &lt;span style="color:#ae81ff">hugo --minify&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Deploy&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">uses&lt;/span>: &lt;span style="color:#ae81ff">peaceiris/actions-gh-pages@v3&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">with&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">deploy_key&lt;/span>: &lt;span style="color:#ae81ff">${{ secrets.DEPLOY_SECRET }}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">external_repository&lt;/span>: &lt;span style="color:#ae81ff">OrangeCocoa/OrangeCocoa.github.io&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">publish_branch&lt;/span>: &lt;span style="color:#ae81ff">master&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>これでGitHubActions上でLibSassが実行できるはずです。&lt;/p></description></item><item><title>【トロコン】パウ・パトロール：ザ・ムービー アドベンチャー・シティがよんでいる</title><link>https://OrangeCocoa.github.io/posts/2024/08_17_%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3_%E3%83%91%E3%82%A6%E3%83%91%E3%83%88%E3%83%AD%E3%83%BC%E3%83%AB%E3%82%B6%E3%83%A0%E3%83%BC%E3%83%93%E3%83%BC-%E3%82%A2%E3%83%89%E3%83%99%E3%83%B3%E3%83%81%E3%83%A3%E3%83%BC%E3%82%B7%E3%83%86%E3%82%A3%E3%81%8C%E3%82%88%E3%82%93%E3%81%A7%E3%81%84%E3%82%8B/</link><pubDate>Sat, 17 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/08_17_%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3_%E3%83%91%E3%82%A6%E3%83%91%E3%83%88%E3%83%AD%E3%83%BC%E3%83%AB%E3%82%B6%E3%83%A0%E3%83%BC%E3%83%93%E3%83%BC-%E3%82%A2%E3%83%89%E3%83%99%E3%83%B3%E3%83%81%E3%83%A3%E3%83%BC%E3%82%B7%E3%83%86%E3%82%A3%E3%81%8C%E3%82%88%E3%82%93%E3%81%A7%E3%81%84%E3%82%8B/</guid><description>&lt;p>パウパトロールをトロコンしました。&lt;/p>
+&lt;p>&lt;img src="https://OrangeCocoa.github.io/images/games/pawpatrol/trocon.jpg" alt="pawpatrol">&lt;/p>
+&lt;p>アニメと比べるとセルフシャドウが強いので、ちょっとキモイかも&amp;hellip;。&lt;/p>
+&lt;br>
+&lt;p>攻略に関しては収集物を確認するすべがないため、メモをとりながら進めていくことを推奨します。&lt;br>
+さらに、ミニゲームリザルトの演出で金バッジに到達する前に演出スキップしてしまうと、データに記録されない不具合があるそうなので、スキップしないよう注意しましょう。&lt;br>
+（リザルト遷移時にオートセーブが走っていますが、内部処理がどうなってるか不明&amp;hellip;）&lt;/p>
+&lt;p>あと、何が重いのかわかりませんが、ロードが絶望的に遅いです。&lt;/p>
+&lt;hr>
+&lt;h3 id="ストーリー" class="title is-3">
+ ストーリー
+&lt;/h3>&lt;p>インタラクトするミニゲーム前に一度見たチュートリアルも毎回表示されたりなど、とにかくテンポが悪いのでやり直しするとめんどくさいです。&lt;br>
+難しいことは全くないので、特に詰まることはないかなと思います。&lt;/p>
+&lt;hr>
+&lt;h3 id="ミニゲーム" class="title is-3">
+ ミニゲーム
+&lt;/h3>&lt;p>ミニゲームは各ステージのレベルすべてクリアする必要があります。&lt;br>
+内容のほとんどがストーリーと同じくクッキーを集めるだけなので、注意点があるもののみポイントを記載します。&lt;/p>
+&lt;br>
+&lt;h4 id="タイムトライアルビークル" class="title is-4">
+ タイムトライアル・ビークル
+&lt;/h4>&lt;p>タイムトライアルと言いながら、カウントダウン式の時間制限があるものはスカイのみ、カウントアップがチェイスとリバティ、それ以外は時間制限がありません。&lt;br>
+スカイはクセもあり時間もけっこう厳しめなので、ミニゲームの中では体感的に一番難しいと感じた。&lt;br>
+チェイスは加速状態が他より速く、クッキー獲得のための車線変更がシビアになってしまいやすいので、加速パネルを踏まない工夫がいるかも。&lt;/p>
+&lt;br>
+&lt;p>難易度の違いは必要クッキー数（ロッキーはゴミ回収）のみであり、コース配置も自動生成なのできついパターンに出会ったらやり直すのも手です。&lt;br>
+（自分もこれ取るのは無理だろって配置が何回かありました）&lt;/p>
+&lt;br>
+&lt;p>スクーターのリバティとそれ以外とで、車線切り替え操作のレスポンスに明らかな違いがあるのが解せなかった&amp;hellip;。&lt;/p>
+&lt;br>
+&lt;p>あと、チェイスのみかもしれませんが何もないところでも〇ボタンを押すと加速できるみたいです。&lt;br>
+再発動にクールタイムがあるみたいだが、何も表示されてないので不明。&lt;/p>
+&lt;br>
+&lt;h4 id="ワンワンブギー" class="title is-4">
+ ワンワンブギー
+&lt;/h4>&lt;p>簡単な音ゲーを2分間続けるミニゲームになっており、単調なだけに苦痛です。&lt;br>
+PS5版はボタンUIの色が白黒になるため、認識難になっていて
+ゲーム中は対戦ぽい見た目ですが、自キャラとNPCのスコアを足した数が総獲得スコアになるので別に対戦ではなさそう。&lt;br>
+スコアのカウントアップ演出が長いので、スキップしないよう注意してください。&lt;/p></description></item><item><title>【トロコン】BLUE PROTOCOL</title><link>https://OrangeCocoa.github.io/posts/2024/08_11_%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3_blue-protocol/</link><pubDate>Sun, 11 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/08_11_%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3_blue-protocol/</guid><description>&lt;p>トロコンしました。&lt;/p>
+&lt;br>
+&lt;p>&lt;img src="https://OrangeCocoa.github.io/images/games/bluepro/trocon.jpg" alt="bluepro">&lt;/p>
+&lt;br>
+&lt;p>一周年で貰えたクラス虎の巻LV70を使って、キャラ作成-&amp;gt;レベル70-&amp;gt;キャラ削除-&amp;gt;キャラ作成-&amp;gt;レベル70の繰り返しで、レベル系トロフィーはすぐ終わりました。&lt;br>
+チュートリアルスキップもあるし、今後も配布される機会はあると思うので、とってない方は時配布されたタイミングでやってみてください。&lt;/p>
+&lt;br>
+&lt;p>レベルを上げても結局そのレベル帯の適正武器がなく、その他のコンテンツクリア系のトロフィーが取れないので、一キャラはストーリーを終わらせておくことをおすすめします。&lt;/p>
+&lt;br>
+&lt;p>以下、挑戦方法がわかりにくいコンテンツの解説&lt;/p>
+&lt;hr>
+&lt;h2 id="レイド" class="title is-2">
+ レイド
+&lt;/h2>&lt;p>特定の時間にフィールドで気流ができている場所にインタラクトすると、参加できるコンテンツです。&lt;br>
+（場所によって挑戦できるレイドが異なります）&lt;br>
+各レイドの必要バトルスコアまでバトルスコアを上げるとレイドに挑戦できるようになります。&lt;/p>
+&lt;br>
+&lt;p>期間限定で開放しているものもあり、そちらに挑戦できる際は常設レイドは過疎になりやすいので、限定レイドの方に挑戦しましょう。&lt;br>
+&lt;a href="https://blue-protocol.com/news/?category=update" target="_blank" rel="noopener">アップデートのお知らせ&lt;/a>に限定レイドの詳細が記載されるので、公式サイトをチェック。&lt;/p>
+&lt;hr>
+&lt;h2 id="タイムアタック" class="title is-2">
+ タイムアタック
+&lt;/h2>&lt;p>期間限定のコンテンツです。&lt;br>
+&lt;a href="https://blue-protocol.com/news/?category=update" target="_blank" rel="noopener">アップデートのお知らせ&lt;/a>でタイムアタック開催の概要が発表されるので、こちらもチェックしましょう。&lt;/p>
+&lt;br>
+&lt;p>各TAによって挑戦可能条件が異なります。&lt;br>
+自分のときは「ラッシュバトル七段」クリアでした。&lt;br>
+（ソロ攻略がきつかったので、マッチング募集に張り付いてました）&lt;/p>
+&lt;br>
+&lt;p>それなりの火力とギミック対応が求められるので、最高レベルの武器と耐性付与のイマジンを揃えておきましょう。&lt;/p>
+&lt;hr>
+&lt;h2 id="スコアアタック" class="title is-2">
+ スコアアタック
+&lt;/h2>&lt;p>冒険者ランク8昇格後に解放されるコンテンツです。&lt;br>
+レイドやTAと違い条件は挑戦するだけなので、放置でいいです。&lt;/p></description></item><item><title>【トロコン】ゼンレスゾーンゼロ</title><link>https://OrangeCocoa.github.io/posts/2024/08_02_%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3_%E3%82%BC%E3%83%B3%E3%83%AC%E3%82%B9%E3%82%BE%E3%83%BC%E3%83%B3%E3%82%BC%E3%83%AD/</link><pubDate>Fri, 02 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/08_02_%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3_%E3%82%BC%E3%83%B3%E3%83%AC%E3%82%B9%E3%82%BE%E3%83%BC%E3%83%B3%E3%82%BC%E3%83%AD/</guid><description>&lt;p>トロコンしました。&lt;br>
+なんとかリリース月の7月中に間に合ってよかった。&lt;br>
+ちなみに&lt;a href="https://psnprofiles.com/trophy/28084-zenless-zone-zero/1-welcome-to-new-eridu" target="_blank" rel="noopener">PSNP&lt;/a>では46番目のプラチナ獲得でした。&lt;br>
+初日から全割りしとけばよかった。&lt;/p>
+&lt;br>
+&lt;p>&lt;img src="https://OrangeCocoa.github.io/images/games/zenless/trocon.jpg" alt="zenless">&lt;/p>
+&lt;br>
+&lt;p>激変はこんな感じ。
+&lt;figure>&lt;img src="https://OrangeCocoa.github.io/images/games/zenless/node01.jpg" width="800">
+&lt;/figure>
+&lt;/p>
+&lt;br>
+&lt;p>片面育成足りてないので、火力的に全Sは厳しかった。&lt;/p>
+&lt;br>
+&lt;p>2回目の激変は全Sがとれました。
+&lt;figure>&lt;img src="https://OrangeCocoa.github.io/images/games/zenless/node02.jpg" width="800">
+&lt;/figure>
+&lt;/p></description></item><item><title>HUGO＋GitHubPages＋GitHubActionsでWebサイトを公開しよう</title><link>https://OrangeCocoa.github.io/posts/2024/08_02_hugo_githubpages_githubactions%E3%81%A7web%E3%82%B5%E3%82%A4%E3%83%88%E3%82%92%E5%85%AC%E9%96%8B%E3%81%97%E3%82%88%E3%81%86/</link><pubDate>Fri, 02 Aug 2024 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2024/08_02_hugo_githubpages_githubactions%E3%81%A7web%E3%82%B5%E3%82%A4%E3%83%88%E3%82%92%E5%85%AC%E9%96%8B%E3%81%97%E3%82%88%E3%81%86/</guid><description>&lt;p>Webページ作成はHTMLべた書きでめんどくさくて時間もかかるし大して面白くない、レンダリングエンジン作る方が面白そう、とそんなイメージを持っていましたが、&lt;br>
+HUGOとGitHubActionsを使って公開まで自動化ができるというのを見て興味が出る。&lt;br>
+この記事は実際にデプロイして公開までやってみた備忘録になります。&lt;br>
+現時点でWebの知識もお金も全くないです。&lt;/p>
+&lt;br>
+&lt;p>公開先をGitHub PagesにするかNetlifyにするかで迷いましたが、いろいろとめんどくさくないGitHubPagesに決定。&lt;br>
+ブログっぽいものとして最低限必要な要素を解説していきます。&lt;/p>
+&lt;br>
+&lt;p>注意点ですが、&lt;a href="https://docs.github.com/ja/pages/getting-started-with-github-pages/about-github-pages#github-pages%E3%81%AE%E5%88%A9%E7%94%A8%E4%B8%8A%E3%81%AE%E5%88%B6%E9%99%90" target="_blank" rel="noopener">GitHub Pages&lt;/a>はアフィリエイトなどの運用は恐らく認められていません。&lt;/p>
+&lt;br>
+&lt;p>GitHubでソースコード公開してるので、気になったら参考にどうぞ。&lt;br>
+&lt;a href="https://github.com/OrangeCocoa/Hugo_OrangeCocoa.github.io" target="_blank" rel="noopener">https://github.com/OrangeCocoa/Hugo_OrangeCocoa.github.io&lt;/a>&lt;/p>
+&lt;br>
+&lt;p>クイックスタートガイドは&lt;a href="https://juggernautjp.info/getting-started/quick-start/" target="_blank" rel="noopener">ここ&lt;/a>&lt;/p>
+&lt;br>
+&lt;p>HUGOでよく使うGoテンプレートの基本構文は&lt;a href="https://juggernautjp.info/templates/introduction/" target="_blank" rel="noopener">ここ&lt;/a>&lt;/p>
+&lt;br>
+&lt;p>（リンクを英語ドキュメントから日本語ドキュメントに差し替えましたが、一部翻訳ページがないものもあります）&lt;/p>
+&lt;br>
+&lt;p>&lt;strong>目次&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="#hugo-install" >HUGOのインストール&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#hugo-setup" >HUGOのセットアップ&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#create-page" >シングルページとリストページの作成&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#create-top" >TOPページの作成&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#hook-github" >GitHub リポジトリの作成と、GitHub Actionsへのフック&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#deploy-error" >デプロイエラー解決&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#insert-image" >画像の挿入&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#add-comment" >コメント欄の追加&lt;/a>&lt;/li>
+&lt;li>&lt;a href="custom-markdown" >Markdownの変換挙動をカスタマイズする&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#markdown-link" >リンクを別タブで開く&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#markdown-mermaid" >Markdown内でmermaid記法を使う&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#markdown-css" >Markdown内でCSS定義したスタイルを使う&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#markdown-goat" >Markdown内でGoAT記法を使う&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#google-search" >Google検索結果に表示させる&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3 id="hugo-install" class="title is-3">
+ HUGOのインストール
+&lt;/h3>&lt;p>&lt;a href="https://juggernautjp.info/installation/" target="_blank" rel="noopener">ここからDL&lt;/a>&lt;br>
+Windowsなので&lt;/p>
+&lt;p>&lt;code>winget install Hugo.Hugo.Extended&lt;/code>&lt;br>
+でインストール。&lt;/p>
+&lt;p>環境変数に登録までされるので、これが一番楽。&lt;/p>
+&lt;hr>
+&lt;h3 id="hugo-setup" class="title is-3">
+ HUGOのセットアップ
+&lt;/h3>&lt;p>コマンドプロンプトを開き、&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-s" data-lang="s">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># カレントディレクトリにHugoのプロジェクトが新規作成される&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>hugo new site [Hugoプロジェクト名]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cd [Hugoプロジェクト名]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># HTMLのビルド&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>hugo
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># ローカルサーバー起動&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>hugo server
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;br>
+&lt;p>&lt;code>hugo new site&lt;/code> でいくつかフォルダが作られるが、よく使うのは&lt;strong>content&lt;/strong>, &lt;strong>layouts&lt;/strong>, &lt;strong>static&lt;/strong>の三つ。&lt;br>
+また&lt;strong>hugo.toml&lt;/strong>はプロジェクトの設定ファイルになるので、これもよく編集します。&lt;/p></description></item><item><title>About</title><link>https://OrangeCocoa.github.io/nav/about/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/nav/about/</guid><description>&lt;p>ゲームプログラマーです。&lt;br>
+ゲーム以外にもいろいろやってますが、メインはゲームです。&lt;br>
+主な生息地はC/C++, C#, Unity。低レベルグラフィックスAPIも少々。&lt;br>
+他に使えるのはObjective-C, Go, GAS, UnrealEngine 4など。&lt;br>
+なんでもデータベース化するのが好き。&lt;/p>
+&lt;br>
+&lt;p>趣味はトロフィー集め。&lt;br>
+最近Xbox Series Xも買いました。&lt;/p>
+&lt;br>
+&lt;p>トロフィーカード&lt;br>
+&lt;a href="https://psnprofiles.com/orange_cocoa_" target="_blank">&lt;img src="https://card.psnprofiles.com/2/orange_cocoa_.png" width=500 height="165" border="0">&lt;/a>&lt;/p>
+&lt;br>
+&lt;p>X&lt;br>
+&lt;a href="https://twitter.com/ruin0908?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-size="large" data-show-count="false">Follow @ruin0908&lt;/a>&lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8">&lt;/script>&lt;/p></description></item><item><title>Archives</title><link>https://OrangeCocoa.github.io/nav/archives/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/nav/archives/</guid><description/></item><item><title>Search</title><link>https://OrangeCocoa.github.io/nav/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/nav/search/</guid><description/></item></channel></rss>
