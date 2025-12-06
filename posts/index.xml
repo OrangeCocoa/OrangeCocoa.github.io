@@ -1,4 +1,134 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 天上天下唯我独尊備忘録雑記メモ覚書</title><link>https://OrangeCocoa.github.io/posts/</link><description>Recent content in Posts on 天上天下唯我独尊備忘録雑記メモ覚書</description><generator>Hugo -- gohugo.io</generator><language>ja-jp</language><lastBuildDate>Mon, 13 Oct 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://OrangeCocoa.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>フォルダ名を一括置換するコマンドをバッチ実行する</title><link>https://OrangeCocoa.github.io/posts/2025/10_13_%E3%83%95%E3%82%A9%E3%83%AB%E3%83%80%E5%90%8D%E3%82%92%E4%B8%80%E6%8B%AC%E7%BD%AE%E6%8F%9B%E3%81%99%E3%82%8B%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%82%92%E3%83%90%E3%83%83%E3%83%81%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B/</link><pubDate>Mon, 13 Oct 2025 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2025/10_13_%E3%83%95%E3%82%A9%E3%83%AB%E3%83%80%E5%90%8D%E3%82%92%E4%B8%80%E6%8B%AC%E7%BD%AE%E6%8F%9B%E3%81%99%E3%82%8B%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%82%92%E3%83%90%E3%83%83%E3%83%81%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B/</guid><description>多数のフォルダ名に共通する特定の文字列を一括置換する機会があったので、一連の処理をバッチファイル化した過程を備忘録的に残します。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 天上天下唯我独尊備忘録雑記メモ覚書</title><link>https://OrangeCocoa.github.io/posts/</link><description>Recent content in Posts on 天上天下唯我独尊備忘録雑記メモ覚書</description><generator>Hugo -- gohugo.io</generator><language>ja-jp</language><lastBuildDate>Sat, 06 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://OrangeCocoa.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>【攻略】メモリーズオフFDヒストリア_ふたりの風流庵</title><link>https://OrangeCocoa.github.io/posts/2025/12_06_%E6%94%BB%E7%95%A5_%E3%83%A1%E3%83%A2%E3%83%AA%E3%83%BC%E3%82%BA%E3%82%AA%E3%83%95fd%E3%83%92%E3%82%B9%E3%83%88%E3%83%AA%E3%82%A2_%E3%81%B5%E3%81%9F%E3%82%8A%E3%81%AE%E9%A2%A8%E6%B5%81%E5%BA%B5/</link><pubDate>Sat, 06 Dec 2025 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2025/12_06_%E6%94%BB%E7%95%A5_%E3%83%A1%E3%83%A2%E3%83%AA%E3%83%BC%E3%82%BA%E3%82%AA%E3%83%95fd%E3%83%92%E3%82%B9%E3%83%88%E3%83%AA%E3%82%A2_%E3%81%B5%E3%81%9F%E3%82%8A%E3%81%AE%E9%A2%A8%E6%B5%81%E5%BA%B5/</guid><description>ちなつと霞の攻略において、本編がないことによって回想CGをとらないといけなくなったため、PS3/VITA版の攻略で進めてもCGが埋まりません。
+そのため、FDヒストリア版のこの二人の攻略を残しておきます。
+同じキャラでイベントが進行すると前の正解の行先選択肢が出なくなりますが、幸い回想CGが回収できるのは最後のイベントのため、全攻略完了後でも回収は可能です。
+リサ、織姫、詩名に関してはPS3/VITA版と変更点はないので、その辺に落ちてる攻略でいけるでしょう。
+・ちなつ
+風流庵
+ちなつに聞いてみる
+楽しみだよ
+マリンランド
+そうなるといいな
+・ちなつ
+特に思い浮かばない
+すみません、してました
+屋上で食べるか
+卵焼き
+この辺で一回霞を選択しないと進行しない？
+・ちなつ
+芦鹿島
+気にしてないよ
+地球が丸く見える丘
+星恋の丘
+地球が丸く見える丘
+・ちなつ
+ルサック
+動きが機敏
+洋風か和風か
+是非！
+ちなつ
+・ちなつ
+プール
+体調が悪いのか？
+大人しいセパレートの水着
+……泳げない、とか？
+・ちなつ
+マリンランド
+ジェットコースター
+分かる
+亨さん
+・ちなつ
+温泉
+そうだな
+ちょっと困ってる
+構わない(大歓迎！→本編回想CG)
+CG回収
+※行先選択を何度か失敗する必要あり？
+・ちなつ
+弁天堂
+知ってる
+酷いわけないだろ
+・霞
+思い浮かばない
+楽しみだな
+好きな人を選ぶ
+俺だけだ
+それは秘密だ
+・霞
+水族館
+悪い、待ったか？
+マンボウ
+イルカショーに行く
+ちょっと落ち着くように言うか
+右から守る
+・霞
+マリンランド
+気付かないふり
+ペタペタランドに直行する
+じゃあ俺がぎんじろーで！
+亨さん？
+・霞
+プール</description></item><item><title>ドライブレターの割り当て方法</title><link>https://OrangeCocoa.github.io/posts/2025/12_05_%E3%83%89%E3%83%A9%E3%82%A4%E3%83%96%E3%83%AC%E3%82%BF%E3%83%BC%E3%81%AE%E5%89%B2%E3%82%8A%E5%BD%93%E3%81%A6%E6%96%B9%E6%B3%95/</link><pubDate>Fri, 05 Dec 2025 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2025/12_05_%E3%83%89%E3%83%A9%E3%82%A4%E3%83%96%E3%83%AC%E3%82%BF%E3%83%BC%E3%81%AE%E5%89%B2%E3%82%8A%E5%BD%93%E3%81%A6%E6%96%B9%E6%B3%95/</guid><description>ある日、録画用に使用していたHDDをフォーマットしてデータ退避用に使おうかと思ったところ、ドライブレターが重複していたようで認識はしているのにエクスプローラに表示されませんでした。
+ちなみにドライブレターとは、C: や D: などの記憶装置を識別するアルファベットのことです。
+まずデバイスマネージャからディスクドライブ -&amp;gt; 対象のドライブのプロパティを開き、ボリューム -&amp;gt; 表示をクリックしてでディスク番号を確認。
+ディスク: Disk 2と書いてあるところ。
+次にディスクの管理を起動します。
+デバイスマネージャで確認したディスク番号と同じものが今回フォーマットしたかった対象のディスクです。
+画像のEドライブでは既にドライブレターの割り当てまで終わってしまっていますが、該当の番号がついたディスクを右クリックし、ボリュームの削除を実行します。
+ディスクの全ての領域を未割り当てにしたら、再度右クリックしてシンプルボリューム作成ウィザードから全領域フォーマット + 新たにドライブレターを付与して認識させて完了です。</description></item><item><title>【トロコン】Voice of Cards ドラゴンの島</title><link>https://OrangeCocoa.github.io/posts/2025/12_04_%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3_voice_of_cards_%E3%83%89%E3%83%A9%E3%82%B4%E3%83%B3%E3%81%AE%E5%B3%B6/</link><pubDate>Thu, 04 Dec 2025 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2025/12_04_%E3%83%88%E3%83%AD%E3%82%B3%E3%83%B3_voice_of_cards_%E3%83%89%E3%83%A9%E3%82%B4%E3%83%B3%E3%81%AE%E5%B3%B6/</guid><description>10/21トロコン
+Voice of Cardsシリーズの第一弾
+TRPGをテーマにしたデジタルゲームを作ろうっていうコンセプトが面白くて購入しました。
+レベリング、金策 最強装備が揃うくらいになってから、連コンで×連射してその辺のフィールド放置が最も楽です。
+エネミーのコレクション裏面集めとも並行できるので、プレイがめんどくさい方は終盤に連射コントローラ推奨。
+一応正規の稼ぎとしては、迷いの森〜共生の村の間に天を統べる鎧をくれる白の騎士がいます。
+この騎士には何度でも戦え、勝つたびに経験値4000、ゴールド1650をくれます。
+光属性の全体攻撃を行なってきますが、だいたいレベル25以上いっているなら楽な相手です。
+闇属性弱点なのでクロエのダークネスやリディのポイズンアローなどが効くでしょう。
+敵のステータスはHP150, ATK38, DEF28となります。
+こいつ
+遊戯場 イベント追加ルールから運ゲーが加速します。
+先攻を取れなかった場合、カードスキルで休みにされイベントで休みにされセットを奪われ何もできないこともあります。
+ゲームテンポも悪く、NPCの手番だとギブアップもできないので、根気よくプレイしてください。
+NPCから狙い撃ちされるとこうなる
+順番のリバースによりターンが回ってこず、ギブアップできないことも
+全解放ルールになると、セットを右回りに交換するドラゴンカードが追加されるので、少しだけコツが必要になってきます。
+まず序盤に強いカードでセットは組まず、数字の低い即時効果のものを選んで揃えていきます。
+4・4のスキルなど他プレイヤーを休みにできる機会を得られたら、右にいる遊戯場の受付を休みにします。
+遊戯場の受付のセットは自分に回ってくることはないので、なるべく強いセットを握らせないよう狙い撃ちにした方がいいです。
+ドラゴンが出たときは中央のセットが選ばれやすい傾向があるっぽいので、2セット揃えたら3セット目は強いセットを揃えましょう。
+これを押さえてさえいれば、あとはドラゴン2枚出たあとのカード運で済むはず。
+それにしても筋肉少女かわいいですね</description></item><item><title>【パスワードまとめ】探偵 神宮寺三郎 PRISM OF EYES</title><link>https://OrangeCocoa.github.io/posts/2025/12_03_%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89%E3%81%BE%E3%81%A8%E3%82%81_%E6%8E%A2%E5%81%B5_%E7%A5%9E%E5%AE%AE%E5%AF%BA%E4%B8%89%E9%83%8E_prism_of_eyes/</link><pubDate>Wed, 03 Dec 2025 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2025/12_03_%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89%E3%81%BE%E3%81%A8%E3%82%81_%E6%8E%A2%E5%81%B5_%E7%A5%9E%E5%AE%AE%E5%AF%BA%E4%B8%89%E9%83%8E_prism_of_eyes/</guid><description>攻略はいろいろなページがやってくれていますが、パスワードがパッケージ版とばら売りのものとで違うことを言及しているサイトが少なく、情報も散らばっているのでまとめます。
+パッケージ版 1 : AAAA
+2 : HINT
+3 : JING
+4 : POES
+5 : DEST
+6 : KBPE
+7 : PFMS
+8 : DASI
+9 : KYYR
+10 : BMVC
+11 : ZLJH
+12 : STFF
+13 : EDRL
+14 : KUHG
+15 : YODS
+16 : JIPX
+時の過ぎゆくままに 1：HINT
+2：ZUTA
+3：TSYM
+4：STKI
+5：EDRL
+6枚の犯行 1：HINT
+2：TGMI
+3：RMHK
+4：KSSY
+5：EDRL
+亡煙を捜せ！ 1：HINT
+2：JGSB
+3：BEWS
+4：YEFM
+5：EDRL
+アオイメノリュウ 1：HINT</description></item><item><title>フォルダ名を一括置換するコマンドをバッチ実行する</title><link>https://OrangeCocoa.github.io/posts/2025/10_13_%E3%83%95%E3%82%A9%E3%83%AB%E3%83%80%E5%90%8D%E3%82%92%E4%B8%80%E6%8B%AC%E7%BD%AE%E6%8F%9B%E3%81%99%E3%82%8B%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%82%92%E3%83%90%E3%83%83%E3%83%81%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B/</link><pubDate>Mon, 13 Oct 2025 00:00:00 +0000</pubDate><guid>https://OrangeCocoa.github.io/posts/2025/10_13_%E3%83%95%E3%82%A9%E3%83%AB%E3%83%80%E5%90%8D%E3%82%92%E4%B8%80%E6%8B%AC%E7%BD%AE%E6%8F%9B%E3%81%99%E3%82%8B%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%82%92%E3%83%90%E3%83%83%E3%83%81%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B/</guid><description>多数のフォルダ名に共通する特定の文字列を一括置換する機会があったので、一連の処理をバッチファイル化した過程を備忘録的に残します。
 まず最終的にできたコマンドがこちら。
 CHCP 65001 Powershell -command &amp;#34;$oldText = &amp;#39;変換元テキスト&amp;#39;; $newText = &amp;#39;変換後テキスト&amp;#39;; Get-ChildItem -Directory | Where-Object { $_.Name -match $oldText } | Rename-Item -NewName { $_.Name -replace $oldText, $newText }&amp;#34; 以下、処理の解説です。
 CHCP 65001 先にCHCPで文字コードを変更します。
